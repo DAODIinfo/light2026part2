@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光景共生 · 07/03 竹溪線 電子導覽手冊</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #EDEAE0;
+    font-family: 'Noto Serif TC', serif;
+    color: #2C2820;
+    display: flex;
+    justify-content: center;
+  }
+  .guide {
+    width: 100%;
+    max-width: 600px;
+    background: #F5F0E8;
+  }
+
+  /* ── BANNER ── */
+  .banner { width: 100%; display: block; }
+  .banner img { width: 100%; height: auto; display: block; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background-color: #2C1F14;
+    border-bottom: 1px solid #1A1108;
+  }
+  .nav-btn {
+    flex: 1;
+    font-size: 11px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    letter-spacing: .05em;
+    color: #D4C4A8 !important;
+    padding: 8px 4px;
+    background-color: transparent !important;
+    border: 0.5px solid #8A7A62;
+    border-radius: 0;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: background-color .15s, color .15s;
+  }
+  .nav-btn:hover { background-color: rgba(212,196,168,.12) !important; }
+  .nav-btn-solid {
+    flex: 1;
+    font-size: 11px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+    letter-spacing: .05em;
+    color: #2C1F14 !important;
+    padding: 8px 4px;
+    background-color: #D4C4A8 !important;
+    border: 0.5px solid #D4C4A8;
+    border-radius: 0;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: opacity .15s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-btn-solid:hover { opacity: .85; }
+
+  /* ── SECTION HELPERS ── */
+  .sec-eyebrow {
+    font-size: 9px; letter-spacing: .22em; color: #9C8A72;
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    text-transform: uppercase; margin-bottom: 7px;
+  }
+  .sec-eyebrow span { color: #C2855A; margin-right: 5px; }
+  .sec-eyebrow-d {
+    font-size: 9px; letter-spacing: .22em; color: rgba(212,196,168,.45);
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    text-transform: uppercase; margin-bottom: 7px;
+  }
+  .sec-eyebrow-d span { color: #C2855A; margin-right: 5px; }
+  .sec-title {
+    font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: .08em; color: #2C2820; padding-bottom: 14px;
+    border-bottom: 0.5px solid #C8BFB0; margin-bottom: 4px;
+  }
+  .sec-title-d {
+    font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: .08em; color: #F0E8D8; padding-bottom: 14px;
+    border-bottom: 0.5px solid rgba(212,196,168,.2); margin-bottom: 4px;
+  }
+
+  /* ── SCHEDULE ── */
+  #schedule { background-color: #2C1F14; padding: 28px 28px 0; }
+  .sched-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .sched-table tr { border-bottom: 0.5px solid rgba(212,196,168,.1); }
+  .sched-table tr:last-child { border-bottom: none; }
+  .sched-table td { padding: 11px 0; vertical-align: top; }
+  .sched-time {
+    font-size: 11px; color: rgba(212,196,168,.48);
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    letter-spacing: .03em; white-space: nowrap;
+    padding-right: 16px; width: 110px; min-width: 110px;
+  }
+  .sched-name {
+    font-size: 13px; color: #F0E8D8; font-weight: 400;
+    letter-spacing: .05em; line-height: 1.5;
+  }
+  .sched-sub {
+    font-size: 10px; color: rgba(212,196,168,.42);
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    letter-spacing: .04em; margin-top: 3px;
+  }
+  .sched-tag {
+    display: inline-block; font-size: 9px; padding: 1px 6px; margin-left: 6px;
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: .05em;
+    border: 0.5px solid currentColor; vertical-align: middle; border-radius: 0;
+  }
+  .tag-l { color: #7AAF7A; }
+  .tag-p { color: #C2855A; }
+
+  /* 結束簽退 */
+  .checkout {
+    background-color: #1E1509; padding: 16px 28px 20px;
+    border-top: 0.5px solid rgba(212,196,168,.1);
+  }
+  .checkout-label {
+    font-size: 9px; letter-spacing: .2em; color: rgba(212,196,168,.4);
+    font-family: 'Noto Sans TC', sans-serif; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .checkout-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .checkout-step {
+    font-size: 11px; color: rgba(212,196,168,.78);
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: .04em;
+  }
+  .checkout-arrow { font-size: 11px; color: #C2855A; }
+  .checkout-link {
+    display: inline-block; font-size: 11px; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400; letter-spacing: .06em; color: #2C1F14;
+    background-color: #D4C4A8; padding: 8px 18px; text-decoration: none;
+    border-radius: 0; transition: opacity .15s;
+  }
+  .checkout-link:hover { opacity: .85; }
+
+  /* ── HIGHLIGHTS ── */
+  #highlights { background-color: #EDE8DC; padding: 28px 28px 32px; }
+  .highlight-list { margin-top: 16px; }
+  .highlight-item {
+    display: flex; gap: 14px; padding: 14px 0;
+    border-bottom: 0.5px solid #D8CFC0; align-items: flex-start;
+  }
+  .highlight-item:last-child { border-bottom: none; }
+  .highlight-num {
+    font-family: 'IM Fell English', serif; font-style: italic; font-size: 24px;
+    color: #C2855A; line-height: 1; flex-shrink: 0; width: 22px; margin-top: 1px;
+  }
+  .highlight-title {
+    font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 500;
+    color: #2C2820; letter-spacing: .05em; margin-bottom: 5px;
+  }
+  .highlight-desc {
+    font-size: 12px; color: #6B5E4E; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300; line-height: 1.8; letter-spacing: .04em;
+  }
+
+  /* ── WORKS ── */
+  #works { background-color: #F5F0E8; padding: 28px 28px 12px; }
+  .work-card { margin-top: 24px; border-bottom: 0.5px solid #D8CFC0; padding-bottom: 28px; }
+  .work-card:last-child { border-bottom: none; padding-bottom: 0; }
+  .work-img-wrap { position: relative; margin-bottom: 14px; }
+  .work-img-wrap img { width: 100%; height: 200px; object-fit: cover; display: block; }
+  .work-type-badge {
+    position: absolute; top: 10px; left: 10px; font-size: 9px;
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300; letter-spacing: .1em;
+    padding: 3px 8px; background: rgba(245,240,232,.92); color: #5C4A2A;
+    border: 0.5px solid rgba(92,74,42,.35); border-radius: 0;
+  }
+  .work-name {
+    font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 500;
+    color: #2C2820; letter-spacing: .07em; margin-bottom: 6px;
+  }
+  .work-award {
+    font-size: 10px; color: #9C8A72; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300; letter-spacing: .04em; padding-left: 10px;
+    border-left: 1.5px solid #C2855A; margin-bottom: 12px; line-height: 1.7;
+  }
+  .work-desc {
+    font-size: 12px; color: #4A3C2C; line-height: 1.9;
+    letter-spacing: .04em; margin-bottom: 14px;
+  }
+  .work-speaker {
+    display: flex; align-items: center; gap: 12px;
+    background-color: #EDE8DC; padding: 12px 14px; margin-bottom: 14px;
+  }
+  .speaker-avatar {
+    width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+    flex-shrink: 0; display: block; background: #C8BAA8;
+  }
+  .speaker-name {
+    font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500;
+    color: #2C2820; letter-spacing: .07em;
+  }
+  .speaker-role {
+    font-size: 10px; color: #7A6A54; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300; letter-spacing: .04em; margin-top: 3px; line-height: 1.5;
+  }
+  .work-link {
+    font-size: 10px; font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    letter-spacing: .16em; color: #9C8A72; text-decoration: none; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 4px; transition: color .15s;
+  }
+  .work-link:hover { color: #C2855A; }
+  .work-link-arrow { color: #C2855A; }
+
+  /* ── REPORT ── */
+  #report { background-color: #2C1F14; padding: 28px 28px 32px; }
+  .report-card { margin-top: 20px; }
+  .report-tag {
+    font-size: 9px; letter-spacing: .2em; color: rgba(212,196,168,.45);
+    font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .report-tag span { color: #C2855A; margin-right: 5px; }
+  .report-title-zh {
+    font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 500;
+    color: #F0E8D8; letter-spacing: .06em; line-height: 1.55; margin-bottom: 5px;
+  }
+  .report-title-en {
+    font-family: 'IM Fell English', serif; font-style: italic;
+    font-size: 11px; color: rgba(212,196,168,.5); margin-bottom: 12px;
+  }
+  .report-interviewee {
+    font-size: 11px; color: rgba(212,196,168,.65); font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300; letter-spacing: .04em; margin-bottom: 12px;
+  }
+  .report-excerpt {
+    font-size: 12px; color: rgba(240,232,216,.85); line-height: 1.9;
+    letter-spacing: .04em; margin-bottom: 16px;
+  }
+  .report-link {
+    font-size: 10px; font-family: 'Noto Sans TC', sans-serif; font-weight: 300;
+    letter-spacing: .16em; color: rgba(212,196,168,.6); text-decoration: none; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 4px; transition: color .15s;
+  }
+  .report-link:hover { color: #C2855A; }
+
+  /* ── READING ── */
+  #reading { background-color: #F5F0E8; padding: 28px 28px 32px; }
+  .read-list { margin-top: 16px; }
+  .read-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; padding: 14px 0; border-bottom: 0.5px solid #D8CFC0;
+    text-decoration: none; transition: opacity .15s;
+  }
+  .read-item:last-child { border-bottom: none; }
+  .read-item:hover { opacity: .7; }
+  .read-main { flex: 1; }
+  .read-badge {
+    display: inline-block; font-size: 9px; color: #fff; padding: 2px 7px;
+    margin-right: 8px; vertical-align: middle; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400; letter-spacing: .03em; white-space: nowrap;
+  }
+  .badge-landscape { background: #5C7A5C; }
+  .badge-lighting { background: #C2855A; }
+  .read-text {
+    font-size: 13px; color: #2C2820; letter-spacing: .04em; line-height: 1.6;
+  }
+  .read-en {
+    display: block; font-size: 10px; color: #9C8A72;
+    font-family: 'IM Fell English', serif; font-style: italic;
+    margin-top: 4px; margin-left: 58px;
+  }
+  .read-arrow { font-size: 14px; color: #C2855A; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  #footer { background-color: #2C1F14; padding: 28px 28px 36px; }
+  .footer-eyebrow {
+    font-size: 9px; letter-spacing: .28em; color: rgba(212,196,168,.42);
+    font-family: 'Noto Sans TC', sans-serif; text-align: center;
+    text-transform: uppercase; margin-bottom: 18px;
+  }
+  .footer-divider { height: 0.5px; background: rgba(212,196,168,.16); margin-bottom: 24px; }
+  .footer-logos { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+  .footer-org { display: flex; flex-direction: column; }
+  .footer-org-r { display: flex; flex-direction: column; align-items: flex-end; }
+  .footer-org-label {
+    font-size: 9px; color: rgba(212,196,168,.4); font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300; letter-spacing: .12em; margin-bottom: 12px; text-transform: uppercase;
+    display: block;
+  }
+  .footer-logo-link { display: inline-block; transition: opacity .2s; }
+  .footer-logo-link:hover { opacity: .75; }
+  .footer-logo-img {
+    height: 44px; width: auto; display: block; object-fit: contain;
+    filter: brightness(0) invert(1) opacity(.85);
+  }
+  .footer-logo-sm { height: 22px; }
+  .footer-logo-box { height: 44px; display: flex; align-items: center; }
+  .footer-logo-box-sm { height: 44px; display: flex; align-items: center; justify-content: flex-end; }
+</style>
+</head>
+<body>
+<div class="guide">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <img
+      src="https://lh3.googleusercontent.com/d/1R193pbd1LacaSWgMojuXCI32lLo1FXoz"
+      alt="光景共生 光環境小旅行 07/03 竹溪線"
+    >
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="快速導航">
+    <button class="nav-btn" onclick="document.getElementById('schedule').scrollIntoView({behavior:'smooth'})">行程表</button>
+    <button class="nav-btn" onclick="document.getElementById('highlights').scrollIntoView({behavior:'smooth'})">行程亮點</button>
+    <button class="nav-btn" onclick="document.getElementById('works').scrollIntoView({behavior:'smooth'})">導覽作品</button>
+    <button class="nav-btn" onclick="document.getElementById('report').scrollIntoView({behavior:'smooth'})">主題報導</button>
+    <a class="nav-btn-solid" href="https://docs.google.com/forms/d/1MStgopJjf2Sb7vF2IO2yRU3TYHT5dvNZNgAsjaFDt-4/edit" target="_blank" rel="noopener">填寫問卷</a>
+  </nav>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div style="background-color:#2C1F14;padding:28px 28px 0;">
+      <div class="sec-eyebrow-d"><span>01.</span>ITINERARY · 行程資訊</div>
+      <div class="sec-title-d">行程總覽</div>
+      <table class="sched-table">
+        <tr>
+          <td class="sched-time">16:30 – 16:55</td>
+          <td>
+            <div class="sched-name">【集合】台南高鐵站二號出口</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="sched-time">17:30 – 18:40</td>
+          <td>
+            <div class="sched-name">竹溪水岸改善及環境營造<span class="sched-tag tag-l">景觀設計</span></div>
+            <div class="sched-sub">2024 第一屆河川希望工程獎／優質獎</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="sched-time">18:45 – 19:45</td>
+          <td>
+            <div class="sched-name">台南竹溪月見橋<span class="sched-tag tag-p">照明設計</span></div>
+            <div class="sched-sub">2022 台灣光環境獎／獲獎</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="sched-time">20:20</td>
+          <td>
+            <div class="sched-name">【賦歸】台南高鐵站</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- 結束簽退 -->
+    <div class="checkout">
+      <div class="checkout-label">END OF TOUR · 活動結束後</div>
+      <div class="checkout-steps">
+        <span class="checkout-step">歸還導覽機</span>
+        <span class="checkout-arrow">→</span>
+        <span class="checkout-step">填寫回饋問卷</span>
+        <span class="checkout-arrow">→</span>
+        <span class="checkout-step">領回保證金</span>
+        <span class="checkout-arrow">→</span>
+        <span class="checkout-step">完成簽退</span>
+      </div>
+      <a class="checkout-link" href="https://docs.google.com/forms/d/1MStgopJjf2Sb7vF2IO2yRU3TYHT5dvNZNgAsjaFDt-4/edit" target="_blank" rel="noopener">
+        前往填寫回饋問卷
+      </a>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTS -->
+  <section id="highlights">
+    <div class="sec-eyebrow"><span>02.</span>HIGHLIGHTS · 行程亮點</div>
+    <div class="sec-title">行程亮點</div>
+    <div class="highlight-list">
+      <div class="highlight-item">
+        <div class="highlight-num">1</div>
+        <div>
+          <div class="highlight-title">設計師現場導覽</div>
+          <div class="highlight-desc">聽見專業設計師的第一手分享，揭開光環境與環境設計的幕後故事。</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">2</div>
+        <div>
+          <div class="highlight-title">獲獎作品實地走讀</div>
+          <div class="highlight-desc">走進光環境獎 × 台灣景觀大獎 × 希望工程獎獲獎場域，體驗日夜不同的空間氛圍。</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">3</div>
+        <div>
+          <div class="highlight-title">景觀設計師 × 照明設計師對談交流</div>
+          <div class="highlight-desc">同場聽見兩種專業視角的激盪，從基地設計到燈光配置，理解景觀與照明在協作過程中的溝通、磨合與共同語言。</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">4</div>
+        <div>
+          <div class="highlight-title">夜間景觀觀察</div>
+          <div class="highlight-desc">學習如何觀看夜間空間的細節：光線、陰影、材質與植物之間的變化。</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">5</div>
+        <div>
+          <div class="highlight-title">照明設計 × 生態友善</div>
+          <div class="highlight-desc">了解設計師如何在景觀環境中，控制光害、維持環境、實踐友善的夜間設計。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS -->
+  <section id="works">
+    <div class="sec-eyebrow"><span>03.</span>WORKS · 導覽作品</div>
+    <div class="sec-title">今日導覽作品</div>
+
+    <div class="work-card">
+      <div class="work-img-wrap">
+        <img src="https://lh3.googleusercontent.com/d/1pGXhfCpdmpANudoV_GdEJ8OGD0VILbBb" alt="竹溪水岸改善及環境營造">
+        <span class="work-type-badge">景觀設計</span>
+      </div>
+      <div class="work-name">竹溪水岸改善及環境營造</div>
+      <div class="work-award">2024 第一屆河川希望工程獎　環境營造類／優質獎</div>
+      <div class="work-desc">面對多年土地違規占用與廢棄物堆積等棘手問題，臺南市政府水利局以高度治理決心收回大部分土地，並在「減法設計」原則下，保留竹溪原有自然樣貌，讓人與自然在水岸間重新呼吸。</div>
+      <div class="work-speaker">
+        <img class="speaker-avatar" src="https://lh3.googleusercontent.com/d/1jscLtp3NuTg_Y1nRS8OYRebzse_Mg2vI" alt="黃元聖">
+        <div>
+          <div class="speaker-name">黃元聖</div>
+          <div class="speaker-role">綠波國際環境設計有限公司／副總經理</div>
+        </div>
+      </div>
+      <a class="work-link" href="https://daodi.com.tw/zh-TW/works/177" target="_blank" rel="noopener">
+        查看完整介紹 <span class="work-link-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="work-card">
+      <div class="work-img-wrap">
+        <img src="https://lh3.googleusercontent.com/d/1A1B9TspEJmtghQ6ObBlHyTi1PJYr9QZH" alt="台南竹溪月見橋">
+        <span class="work-type-badge">照明設計</span>
+      </div>
+      <div class="work-name">台南竹溪月見橋</div>
+      <div class="work-award">2022 台灣光環境獎／獲獎</div>
+      <div class="work-desc">月見橋以柔和而克制的光線勾勒橋體曲線，看光如何在人與自然之間穿梭，讓場域在夜間重新呼吸，呈現水岸生態與步行體驗的雙重層次。</div>
+      <div class="work-speaker">
+        <img class="speaker-avatar" src="https://lh3.googleusercontent.com/d/1RFrF0Ot6iBfRtYAAGuS07U_1ILYXUWr5" alt="張懷文">
+        <div>
+          <div class="speaker-name">張懷文</div>
+          <div class="speaker-role">文滙建築師事務所／建築師</div>
+        </div>
+      </div>
+      <a class="work-link" href="https://www.coretronicart.org.tw/Info/20398" target="_blank" rel="noopener">
+        查看完整介紹 <span class="work-link-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- REPORT -->
+  <section id="report">
+    <div class="sec-eyebrow-d"><span>04.</span>FEATURED REPORT · 道地新報導</div>
+    <div class="sec-title-d">主題報導</div>
+    <div class="report-card">
+      <div class="report-tag"><span>FEATURED REPORT</span>道地新報導</div>
+      <div class="report-title-zh">談古蹟照明<br>及當代公共建設的不同思維</div>
+      <div class="report-title-en">A Conversation on Heritage &amp; Civic Lighting</div>
+      <div class="report-interviewee">專訪　燈戲設計 劉家銘　＋　肯緒照明　林世秉</div>
+      <div class="report-excerpt">從府城百年古蹟到當代都會建設，兩位照明設計師如何在不同尺度、不同時代脈絡中，重新思考「光」應該扮演的角色？古蹟照明強調「克制」、當代公共建設追求「敘事」，兩種思維如何在台南這座城市同時並存？</div>
+      <a class="report-link" href="https://daodi.com.tw/zh-TW/project_theme/92" target="_blank" rel="noopener">
+        閱讀全文 <span style="color:#C2855A;">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- READING -->
+  <section id="reading">
+    <div class="sec-eyebrow"><span>05.</span>FURTHER READING · 延伸閱讀</div>
+    <div class="sec-title">延伸閱讀</div>
+    <div class="read-list">
+      <a class="read-item" href="https://daodi.com.tw/zh-TW/project_theme/78" target="_blank" rel="noopener">
+        <div class="read-main">
+          <span class="read-badge badge-lighting">照明設計</span><span class="read-text">光之敘事：以照明設計重塑夜間景觀的故事｜專訪沁弦築影照明設計林靖祐總監</span>
+          <span class="read-en">Lighting as Narrative</span>
+        </div>
+        <div class="read-arrow">→</div>
+      </a>
+      <a class="read-item" href="https://daodi.com.tw/zh-TW/special_columns/58" target="_blank" rel="noopener">
+        <div class="read-main">
+          <span class="read-badge badge-lighting">照明設計</span><span class="read-text">照明設計師專欄：恰當敘事的光感，景觀照明的路上觀察學</span>
+          <span class="read-en">Special Column on Lighting Design</span>
+        </div>
+        <div class="read-arrow">→</div>
+      </a>
+      <a class="read-item" href="https://daodi.com.tw/zh-TW/works/38" target="_blank" rel="noopener">
+        <div class="read-main">
+          <span class="read-badge badge-landscape">景觀設計</span><span class="read-text">竹溪水環境改善計畫</span>
+          <span class="read-en">Zhuxi Watershed Improvement Plan</span>
+        </div>
+        <div class="read-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-eyebrow">CO-ORGANIZERS</div>
+    <div class="footer-divider"></div>
+    <div class="footer-logos">
+      <div class="footer-org">
+        <div class="footer-org-label">主辦單位</div>
+        <div class="footer-logo-box">
+          <a class="footer-logo-link" href="https://www.coretronicart.org.tw/" target="_blank" rel="noopener">
+            <img class="footer-logo-img footer-logo-sm" src="https://lh3.googleusercontent.com/d/1HbHhd33YDYpfzIey3Yn2iRP5rqyE-H-w" alt="中強光電文化藝術基金會">
+          </a>
+        </div>
+      </div>
+      <div class="footer-org-r">
+        <div class="footer-org-label">協辦單位</div>
+        <div class="footer-logo-box-sm">
+          <a class="footer-logo-link" href="https://daodi.com.tw/zh-TW" target="_blank" rel="noopener">
+            <img class="footer-logo-img" src="https://lh3.googleusercontent.com/d/1nddsCM403hrxsKxj4lm5mUb7GUUN0kyl" alt="道地 DAODI">
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
